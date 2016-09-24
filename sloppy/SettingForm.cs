@@ -26,7 +26,7 @@ namespace logtran
             textBox2.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
             textBox2.ForeColor = Settings.Instance.DumpTextBoxForeColor;
             textBox2.BackColor = Settings.Instance.DumpTextBoxBackColor;
-            trackBar1.Value = 50;
+            trackBar1.Value    = Settings.Instance.Opacity;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -117,9 +117,9 @@ namespace logtran
             cd.SolidColorOnly = false;
             //[作成した色]に指定した色（RGB値）を表示する
             cd.CustomColors = new int[] {
-    0x33, 0x66, 0x99, 0xCC, 0x3300, 0x3333,
-    0x3366, 0x3399, 0x33CC, 0x6600, 0x6633,
-    0x6666, 0x6699, 0x66CC, 0x9900, 0x9933};
+                0x33, 0x66, 0x99, 0xCC, 0x3300, 0x3333,
+                0x3366, 0x3399, 0x33CC, 0x6600, 0x6633,
+                0x6666, 0x6699, 0x66CC, 0x9900, 0x9933};
 
             //ダイアログを表示する
             if (cd.ShowDialog() == DialogResult.OK)
@@ -163,6 +163,21 @@ namespace logtran
         private void groupBox1_Enter(object sender, EventArgs e)
         {
             textBox2.Focus();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Settings.LoadFromXmlFile();
+            textBox1.Text = Settings.Instance.LogDir;
+            textBox2.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
+            textBox2.ForeColor = Settings.Instance.DumpTextBoxForeColor;
+            textBox2.BackColor = Settings.Instance.DumpTextBoxBackColor;
+            trackBar1.Value = Settings.Instance.Opacity;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
