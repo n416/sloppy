@@ -3,7 +3,7 @@
 
  * 手っ取り早く手に入れてみたい方はこちらを
 
-  [1.101のビルド済](https://github.com/n416/sloppy/raw/master/sloppy.zip "1.101のビルド済")
+  [1.102のビルド済](https://github.com/n416/sloppy/raw/master/sloppy.zip "1.102のビルド済")
 
   * ソースが気になる方はこちらを
 
