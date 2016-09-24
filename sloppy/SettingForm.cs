@@ -22,42 +22,42 @@ namespace logtran
 
         private void SettingForm_Load(object sender, EventArgs e)
         {
-            textBox1.Text = Settings.Instance.LogDir;
-            textBox2.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
-            textBox2.ForeColor = Settings.Instance.DumpTextBoxForeColor;
-            textBox2.BackColor = Settings.Instance.DumpTextBoxBackColor;
-            trackBar1.Value    = Settings.Instance.Opacity;
+            logFolderTextBox.Text = Settings.Instance.LogDir;
+            previewDumpTextBox.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
+            previewDumpTextBox.ForeColor = Settings.Instance.DumpTextBoxForeColor;
+            previewDumpTextBox.BackColor = Settings.Instance.DumpTextBoxBackColor;
+            opacityTrackBar.Value    = Settings.Instance.Opacity;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void logFolderDialogOpenButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
             fd.Description = "ログの保存されているディレクトリを指定して下さい";
             fd.RootFolder = Environment.SpecialFolder.Desktop;
-            fd.SelectedPath = textBox1.Text;
+            fd.SelectedPath = logFolderTextBox.Text;
 
             if (fd.ShowDialog(this) == DialogResult.OK)
             {
-                textBox1.Text = fd.SelectedPath;
+                logFolderTextBox.Text = fd.SelectedPath;
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void saveButton_Click(object sender, EventArgs e)
         {
             // バリデーション
-            if (!System.IO.Directory.Exists(textBox1.Text))
+            if (!System.IO.Directory.Exists(logFolderTextBox.Text))
             {
                 MessageBox.Show("ログディレクトリが存在しません");
                 return;
             }
 
             // 設定を変更する
-            Settings.Instance.LogDir               = textBox1.Text;
-            Settings.Instance.DumpTextBoxFontSize  = (int)textBox2.Font.SizeInPoints;
-            Settings.Instance.DumpTextBoxFontName  = textBox2.Font.Name;
-            Settings.Instance.DumpTextBoxForeColor = textBox2.ForeColor;
-            Settings.Instance.DumpTextBoxBackColor = textBox2.BackColor;
-            Settings.Instance.Opacity              = trackBar1.Value;
+            Settings.Instance.LogDir               = logFolderTextBox.Text;
+            Settings.Instance.DumpTextBoxFontSize  = (int)previewDumpTextBox.Font.SizeInPoints;
+            Settings.Instance.DumpTextBoxFontName  = previewDumpTextBox.Font.Name;
+            Settings.Instance.DumpTextBoxForeColor = previewDumpTextBox.ForeColor;
+            Settings.Instance.DumpTextBoxBackColor = previewDumpTextBox.BackColor;
+            Settings.Instance.Opacity              = opacityTrackBar.Value;
             // 現在の設定をXMLファイルに保存する
             Settings.SaveToXmlFile();
 
@@ -67,15 +67,15 @@ namespace logtran
         }
 
 
-        private void button3_Click(object sender, EventArgs e)
+        private void fontDialogOpenButton_Click(object sender, EventArgs e)
         {
             //FontDialogクラスのインスタンスを作成
             FontDialog fd = new FontDialog();
 
             //初期のフォントを設定
-            fd.Font = textBox2.Font;
+            fd.Font = previewDumpTextBox.Font;
             //初期の色を設定
-            fd.Color = textBox2.ForeColor;
+            fd.Color = previewDumpTextBox.ForeColor;
             //ユーザーが選択できるポイントサイズの最大値を設定する
             fd.MaxSize = 30;
             fd.MinSize = 7;
@@ -97,18 +97,18 @@ namespace logtran
             if (fd.ShowDialog() != DialogResult.Cancel)
             {
                 //TextBox1のフォントと色を変える
-                textBox2.Font      = fd.Font;
-                textBox2.ForeColor = fd.Color;
+                previewDumpTextBox.Font      = fd.Font;
+                previewDumpTextBox.ForeColor = fd.Color;
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void backColorDialogOpenButton_Click(object sender, EventArgs e)
         {
             //ColorDialogクラスのインスタンスを作成
             ColorDialog cd = new ColorDialog();
 
             //はじめに選択されている色を設定
-            cd.Color = textBox2.BackColor;
+            cd.Color = previewDumpTextBox.BackColor;
             //色の作成部分を表示可能にする
             //デフォルトがTrueのため必要はない
             cd.AllowFullOpen = true;
@@ -125,13 +125,13 @@ namespace logtran
             if (cd.ShowDialog() == DialogResult.OK)
             {
                 //選択された色の取得
-                textBox2.BackColor = cd.Color;
+                previewDumpTextBox.BackColor = cd.Color;
             }
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
+        private void opacityTrackBar_Scroll(object sender, EventArgs e)
         {
-            Opacity = trackBar1.Value * 0.01;
+            Opacity = opacityTrackBar.Value * 0.01;
             OpacityChangeButtonRefresh();
         }
 
@@ -139,7 +139,7 @@ namespace logtran
         private void opacityChangeButton_Click(object sender, EventArgs e)
         {
             if(Opacity == 1) {
-                Opacity = trackBar1.Value * 0.01;
+                Opacity = opacityTrackBar.Value * 0.01;
             }
             else
             {
@@ -162,20 +162,20 @@ namespace logtran
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
-            textBox2.Focus();
+            previewDumpTextBox.Focus();
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void returnDefaultButton_Click(object sender, EventArgs e)
         {
             Settings.LoadFromXmlFile();
-            textBox1.Text = Settings.Instance.LogDir;
-            textBox2.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
-            textBox2.ForeColor = Settings.Instance.DumpTextBoxForeColor;
-            textBox2.BackColor = Settings.Instance.DumpTextBoxBackColor;
-            trackBar1.Value = Settings.Instance.Opacity;
+            logFolderTextBox.Text = Settings.Instance.LogDir;
+            previewDumpTextBox.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
+            previewDumpTextBox.ForeColor = Settings.Instance.DumpTextBoxForeColor;
+            previewDumpTextBox.BackColor = Settings.Instance.DumpTextBoxBackColor;
+            opacityTrackBar.Value = Settings.Instance.Opacity;
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void cancelButton_Click(object sender, EventArgs e)
         {
             Close();
         }
