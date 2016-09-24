@@ -229,7 +229,7 @@
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.dumpTextBox);
             this.MainMenuStrip = this.menuStrip;
-            this.MinimumSize = new System.Drawing.Size(16, 200);
+            this.MinimumSize = new System.Drawing.Size(600, 200);
             this.Name = "MainForm";
             this.Opacity = 0.95D;
             this.Text = "Sloppy";
