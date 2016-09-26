@@ -1,4 +1,4 @@
-﻿namespace logtran
+﻿namespace sloppy
 {
     partial class SettingForm
     {
@@ -69,7 +69,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(626, 294);
+            this.saveButton.Location = new System.Drawing.Point(626, 295);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(150, 30);
             this.saveButton.TabIndex = 2;
@@ -90,7 +90,7 @@
             // returnDefaultButton
             // 
             this.returnDefaultButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.returnDefaultButton.Location = new System.Drawing.Point(7, 294);
+            this.returnDefaultButton.Location = new System.Drawing.Point(7, 295);
             this.returnDefaultButton.Name = "returnDefaultButton";
             this.returnDefaultButton.Size = new System.Drawing.Size(150, 30);
             this.returnDefaultButton.TabIndex = 11;
@@ -101,7 +101,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(470, 294);
+            this.cancelButton.Location = new System.Drawing.Point(470, 295);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(150, 30);
             this.cancelButton.TabIndex = 12;
@@ -178,11 +178,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.opacityTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.opacityTrackBar.LargeChange = 1;
-            this.opacityTrackBar.Location = new System.Drawing.Point(0, 158);
+            this.opacityTrackBar.Location = new System.Drawing.Point(14, 158);
             this.opacityTrackBar.Maximum = 100;
             this.opacityTrackBar.Minimum = 40;
             this.opacityTrackBar.Name = "opacityTrackBar";
-            this.opacityTrackBar.Size = new System.Drawing.Size(764, 45);
+            this.opacityTrackBar.Size = new System.Drawing.Size(738, 45);
             this.opacityTrackBar.TabIndex = 16;
             this.opacityTrackBar.Value = 40;
             this.opacityTrackBar.Scroll += new System.EventHandler(this.opacityTrackBar_Scroll);
@@ -201,7 +201,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 336);
+            this.ClientSize = new System.Drawing.Size(784, 337);
             this.Controls.Add(this.previewDumpTextBoxGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.returnDefaultButton);

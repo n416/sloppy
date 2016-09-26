@@ -1,4 +1,4 @@
-﻿namespace logtran
+﻿namespace sloppy
 {
     partial class MainForm
     {
@@ -50,8 +50,8 @@
             // 
             // dumpTextBox
             // 
-            this.dumpTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dumpTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dumpTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(30)))), ((int)(((byte)(10)))));
             this.dumpTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -158,7 +158,7 @@
             // styleChangeToolStripMenuItem
             // 
             this.styleChangeToolStripMenuItem.Name = "styleChangeToolStripMenuItem";
-            this.styleChangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            this.styleChangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
             | System.Windows.Forms.Keys.T)));
             this.styleChangeToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.styleChangeToolStripMenuItem.Text = "形状変更(&T)";

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace logtran
+namespace sloppy
 {
     // ログコンテナクラス
     public class logContainer

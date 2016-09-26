@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace logtran
+namespace sloppy
 {
     public partial class SettingForm : Form
     {

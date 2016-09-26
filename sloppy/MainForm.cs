@@ -5,9 +5,11 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using System.Web;
 using Microsoft.VisualBasic;
+using System.Text.RegularExpressions;
 
-namespace logtran
+namespace sloppy
 {
     //フォームクラス
     public partial class MainForm : Form
@@ -32,6 +34,12 @@ namespace logtran
         // 発言者の最大文字長
         private int maxOwnerLength;
 
+        // 中国語固有名詞→日本語固有名詞 変換リスト
+        private SortedList<String, String> specialWordList = new SortedList<String, String>();
+
+        // 中国語固有名詞→日本語固有名詞 変換リストの中国語固有名詞の文字長で降順で並び替えたリスト
+        private List<KeyValuePair<string, string>> specialWordListOfKeyDescSort;
+
         // フォームコンストラクタ
         public MainForm()
         {
@@ -40,6 +48,15 @@ namespace logtran
             Settings.LoadFromXmlFile();
             // 発言者の最大文字長
             maxOwnerLength = 0;
+
+            // 中国語固有名詞→日本語固有名詞 変換リストをセット
+            specialWordList = CSVParser.getList(Application.StartupPath + "\\filter.tsv");
+
+            // 中国語固有名詞→日本語固有名詞 変換リストをコピーして、List<KeyValuePair<string, string>>の形に変換
+            specialWordListOfKeyDescSort = new List<KeyValuePair<string, string>>(specialWordList);
+            // 文字長で降順ソート
+            specialWordListOfKeyDescSort.Sort(CompareKeyLengthDesc);
+
         }
 
         // フォームロード
@@ -192,6 +209,14 @@ namespace logtran
             // コンテナから発言だけを抜き出して、翻訳用の文字列を区切り文字でつなぐ
             string joinedString = string.Join(Constants.TranslationLogDelimiter, sourceContainer._echoList.ToArray());
 
+            // 中国語固有名詞を固有名詞の接置詞＋specialWordList上の該当する中国語固有名詞のid＋固有名詞の接置詞に置換する
+            // specialWordListではなくspecialWordListOfKeyDescSortでループを回しているのは、より長い文字列で先に置換する為
+            foreach (KeyValuePair<string, string> kvp in specialWordListOfKeyDescSort)
+            {
+                // 中国語固有名詞を固有名詞の接置詞＋specialWordList上の該当する中国語固有名詞のid＋固有名詞の接置詞に置換
+                joinedString = joinedString.Replace(kvp.Key, Constants.SpecialWordAdposition + specialWordList.IndexOfKey(kvp.Key) + Constants.SpecialWordAdposition);
+            }
+
             // コンテナから発言者だけ抜き出して、ループを回す
             foreach (string owner in sourceContainer._ownerList) {
                 if (maxOwnerLength < owner.Length)
@@ -224,6 +249,7 @@ namespace logtran
         {
             if (watchTimer.Enabled == false)
             { // タイマーが動いていない場合は
+                // ディレクトリの存在確認
                 if (!Directory.Exists(Settings.Instance.LogDir))
                 {
                     MessageBox.Show("ログディレクトリが存在しません");
@@ -374,18 +400,29 @@ namespace logtran
             /* PC版翻訳ページをパース */
             HtmlAgilityPack.HtmlNode tranNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@id=\"result_box\"]");
             String tranString = tranNode.InnerText;
+            tranString = HttpUtility.HtmlDecode(tranString); // ブラウザ上でのunicode文字列は&#の通常文字列な為変換する
             String[] delimiter = { Constants.TranslationLogDelimiter.Replace("\r", "") };
             String[] tranArray = tranString.Split(delimiter, StringSplitOptions.None); //これで1行づつになる
 
             int i = 0;
-            string trimValue;
+            string processedValue;
             StringBuilder stringBuilder = new StringBuilder();
             foreach (string value in tranArray)
             {
-                trimValue = value.Replace("\r", "");
+                // 不要な文字の削除
+                processedValue = value.Replace("\r", "");
+
+                // 固有名詞の接置詞＋specialWordList上の該当する中国語固有名詞のid＋固有名詞の接置詞を日本語固有名詞文字列に置換
+                processedValue = Regex.Replace(
+                    processedValue,
+                    Constants.SpecialWordAdposition + @"(?<m>.*?)" + Constants.SpecialWordAdposition,
+                    new MatchEvaluator(MatchWordReplaceToSpecialWord), 
+                    RegexOptions.Singleline | RegexOptions.ExplicitCapture
+                    );
+
                 if (sourceContainer._ownerList[i] != "")
                 {
-                    stringBuilder.Append(string.Format("{0:s} : {1:s}\r\n", Strings.StrConv(sourceContainer._ownerList[i], VbStrConv.Wide).PadRight(maxOwnerLength, '　'), trimValue));
+                    stringBuilder.Append(string.Format("{0:s} : {1:s}\r\n", Strings.StrConv(sourceContainer._ownerList[i], VbStrConv.Wide).PadRight(maxOwnerLength, '　'), processedValue));
                     i++;
                 }
             }
@@ -393,12 +430,27 @@ namespace logtran
             dumpTextBox.AppendText(stringBuilder.ToString());
 
         }
+
+        // 文字長の降順でソート用のデリゲートメソッド
+        static int CompareKeyLengthDesc(KeyValuePair<string, string> x, KeyValuePair<string, string> y)
+        {
+            // Keyの文字長で比較した結果を返す
+            return y.Key.Length - x.Key.Length;
+        }
+
+        // 固有名詞の接置詞＋specialWordList上の該当する中国語固有名詞のid＋固有名詞の接置詞を日本語固有名詞文字列に置換するMatchEvaluator用のデリゲートメソッド
+        private string MatchWordReplaceToSpecialWord(System.Text.RegularExpressions.Match m)
+        {
+            return specialWordList.Values[int.Parse(m.Groups["m"].Value)];// 見つかった特殊文字列のIDを元に固有名詞文字列を返す
+        }
+
     }
 
     //定数用クラス
     static class Constants
     {
-        public const string TranslationLogDelimiter = "@@@@@@\r";//このデリミターは、日本語変換掛けられた時に変化しないものを設定する必要がある。ブラウザで表示した段階で\nが無くなったり、@@@@だけだと、hoge@@@@hogeがhogehoge@@@@とかに変換されたりといろいろあるので、調べた結果今の形になっている。
+        public const string SpecialWordAdposition = "♦"; // 固有名詞の接置詞（前置詞と後置詞）
+        public const string TranslationLogDelimiter = "@@@@@@\r";//このデリミターは、日本語変換掛けられた時に前後の文面でも位置すら変化しないものを設定する必要がある。とっても面倒だけど、いろいろ調べてこれに落ち着いた。例えばブラウザで表示した段階で\nが無くなったり、@@@@だけだと、hoge@@@@hogeがhogehoge@@@@とかに変換されたりといろいろあった。
         public const string TranslateGooglSourceXpath = "//textarea[@id=\"source\"]";
         public const string TranslateGoogleResultXpath = "//span[@id=\"result_box\"]";
     }
