@@ -409,8 +409,7 @@ namespace sloppy
             StringBuilder stringBuilder = new StringBuilder();
             foreach (string value in tranArray)
             {
-                // 不要な文字の削除
-                processedValue = value.Replace("\r", "");
+                processedValue = value;
 
                 // 固有名詞の接置詞＋specialWordList上の該当する中国語固有名詞のid＋固有名詞の接置詞を日本語固有名詞文字列に置換
                 processedValue = Regex.Replace(
@@ -419,6 +418,9 @@ namespace sloppy
                     new MatchEvaluator(MatchWordReplaceToSpecialWord), 
                     RegexOptions.Singleline | RegexOptions.ExplicitCapture
                     );
+
+                // 不要な文字の削除
+                processedValue = processedValue.Replace("\r", "");
 
                 if (sourceContainer._ownerList[i] != "")
                 {
@@ -441,7 +443,12 @@ namespace sloppy
         // 固有名詞の接置詞＋specialWordList上の該当する中国語固有名詞のid＋固有名詞の接置詞を日本語固有名詞文字列に置換するMatchEvaluator用のデリゲートメソッド
         private string MatchWordReplaceToSpecialWord(System.Text.RegularExpressions.Match m)
         {
-            return specialWordList.Values[int.Parse(m.Groups["m"].Value)];// 見つかった特殊文字列のIDを元に固有名詞文字列を返す
+            int resultIndex;
+            if (int.TryParse(m.Groups["m"].Value, out resultIndex) == false)
+            {
+                return "";
+            }
+            return specialWordList.Values[resultIndex];// 見つかった特殊文字列のIDを元に固有名詞文字列を返す
         }
 
     }
@@ -449,7 +456,7 @@ namespace sloppy
     //定数用クラス
     static class Constants
     {
-        public const string SpecialWordAdposition = "♦"; // 固有名詞の接置詞（前置詞と後置詞）
+        public const string SpecialWordAdposition = "\r♦♦\r"; // 固有名詞の接置詞（前置詞と後置詞）
         public const string TranslationLogDelimiter = "@@@@@@\r";//このデリミターは、日本語変換掛けられた時に前後の文面でも位置すら変化しないものを設定する必要がある。とっても面倒だけど、いろいろ調べてこれに落ち着いた。例えばブラウザで表示した段階で\nが無くなったり、@@@@だけだと、hoge@@@@hogeがhogehoge@@@@とかに変換されたりといろいろあった。
         public const string TranslateGooglSourceXpath = "//textarea[@id=\"source\"]";
         public const string TranslateGoogleResultXpath = "//span[@id=\"result_box\"]";
