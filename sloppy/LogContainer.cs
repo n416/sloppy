@@ -18,7 +18,7 @@ namespace sloppy
             String[] sourceArray = source.Split(delimiter, StringSplitOptions.None); //これで1行づつになる
             foreach (string value in sourceArray)
             {
-                Regex regex = new Regex(@"^\[(?<time>\d{2}:\d{2}\.\d{2})\] (?<owner>[^：].*?)：(?<echo>.*)", RegexOptions.Singleline | RegexOptions.ExplicitCapture);
+                Regex regex = new Regex(@"^\[(?<time>\d{2}:\d{2}\.\d{2})\] (?<owner>[^：]*?)：(?<echo>.*)", RegexOptions.Singleline | RegexOptions.ExplicitCapture);
                 GroupCollection groups = regex.Match(value).Groups;
                 // 時刻
                 _timeList.Add(groups["time"].Value);

@@ -425,8 +425,12 @@ namespace sloppy
                 if (sourceContainer._ownerList[i] != "")
                 {
                     stringBuilder.Append(string.Format("{0:s} : {1:s}\r\n", Strings.StrConv(sourceContainer._ownerList[i], VbStrConv.Wide).PadRight(maxOwnerLength, '　'), processedValue));
-                    i++;
                 }
+                else
+                {
+                    stringBuilder.Append(string.Format("{0:s}\r\n", processedValue));
+                }
+                i++;
             }
             // 出力
             dumpTextBox.AppendText(stringBuilder.ToString());
