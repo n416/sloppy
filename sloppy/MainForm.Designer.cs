@@ -44,14 +44,15 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.watchTimer = new System.Windows.Forms.Timer(this.components);
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.InfoIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // dumpTextBox
             // 
-            this.dumpTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dumpTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dumpTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(30)))), ((int)(((byte)(10)))));
             this.dumpTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -140,7 +141,8 @@
             this.styleChangeToolStripMenuItem,
             this.LogClearToolStripMenuItem,
             this.toolStripSeparator1,
-            this.setingFormOpenToolStripMenuItem});
+            this.setingFormOpenToolStripMenuItem,
+            this.InfoIToolStripMenuItem});
             this.ToolStripMenuItem.Name = "ToolStripMenuItem";
             this.ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.M)));
             this.ToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
@@ -158,7 +160,7 @@
             // styleChangeToolStripMenuItem
             // 
             this.styleChangeToolStripMenuItem.Name = "styleChangeToolStripMenuItem";
-            this.styleChangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+            this.styleChangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.T)));
             this.styleChangeToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.styleChangeToolStripMenuItem.Text = "形状変更(&T)";
@@ -167,6 +169,8 @@
             // LogClearToolStripMenuItem
             // 
             this.LogClearToolStripMenuItem.Name = "LogClearToolStripMenuItem";
+            this.LogClearToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.C)));
             this.LogClearToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.LogClearToolStripMenuItem.Text = "ログクリア(&C)";
             // 
@@ -214,6 +218,15 @@
             this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBox1.UseVisualStyleBackColor = false;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // InfoIToolStripMenuItem
+            // 
+            this.InfoIToolStripMenuItem.Name = "InfoIToolStripMenuItem";
+            this.InfoIToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.I)));
+            this.InfoIToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.InfoIToolStripMenuItem.Text = "アプリーケーション情報(&I)";
+            this.InfoIToolStripMenuItem.Click += new System.EventHandler(this.InfoIToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -263,6 +276,7 @@
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.Timer watchTimer;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.ToolStripMenuItem InfoIToolStripMenuItem;
     }
 }
 

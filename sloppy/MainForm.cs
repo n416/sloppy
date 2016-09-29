@@ -455,6 +455,13 @@ namespace sloppy
             return specialWordList.Values[resultIndex];// 見つかった特殊文字列のIDを元に固有名詞文字列を返す
         }
 
+        private void InfoIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox f = new AboutBox();
+            f.ShowDialog(this);
+            f.Dispose();
+
+        }
     }
 
     //定数用クラス
