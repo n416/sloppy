@@ -41,10 +41,10 @@
             this.LogClearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.setingFormOpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.InfoIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.watchTimer = new System.Windows.Forms.Timer(this.components);
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.InfoIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -153,7 +153,7 @@
             this.monitoringToolStripMenuItem.ForeColor = System.Drawing.Color.Green;
             this.monitoringToolStripMenuItem.Name = "monitoringToolStripMenuItem";
             this.monitoringToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
-            this.monitoringToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.monitoringToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
             this.monitoringToolStripMenuItem.Text = "監視を開始する(&O)";
             this.monitoringToolStripMenuItem.Click += new System.EventHandler(this.monitoringStartToolStripMenuItem_Click);
             // 
@@ -162,7 +162,7 @@
             this.styleChangeToolStripMenuItem.Name = "styleChangeToolStripMenuItem";
             this.styleChangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.T)));
-            this.styleChangeToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.styleChangeToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
             this.styleChangeToolStripMenuItem.Text = "形状変更(&T)";
             this.styleChangeToolStripMenuItem.Click += new System.EventHandler(this.styleChangeToolStripMenuItem_Click);
             // 
@@ -171,21 +171,30 @@
             this.LogClearToolStripMenuItem.Name = "LogClearToolStripMenuItem";
             this.LogClearToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.C)));
-            this.LogClearToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.LogClearToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
             this.LogClearToolStripMenuItem.Text = "ログクリア(&C)";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(203, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(242, 6);
             // 
             // setingFormOpenToolStripMenuItem
             // 
             this.setingFormOpenToolStripMenuItem.Name = "setingFormOpenToolStripMenuItem";
             this.setingFormOpenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
-            this.setingFormOpenToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.setingFormOpenToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
             this.setingFormOpenToolStripMenuItem.Text = "設定(&S)";
             this.setingFormOpenToolStripMenuItem.Click += new System.EventHandler(this.setingFormOpenToolStripMenuItem_Click);
+            // 
+            // InfoIToolStripMenuItem
+            // 
+            this.InfoIToolStripMenuItem.Name = "InfoIToolStripMenuItem";
+            this.InfoIToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.I)));
+            this.InfoIToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.InfoIToolStripMenuItem.Text = "アプリーケーション情報(&I)";
+            this.InfoIToolStripMenuItem.Click += new System.EventHandler(this.InfoIToolStripMenuItem_Click);
             // 
             // menuStrip
             // 
@@ -218,15 +227,6 @@
             this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBox1.UseVisualStyleBackColor = false;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // InfoIToolStripMenuItem
-            // 
-            this.InfoIToolStripMenuItem.Name = "InfoIToolStripMenuItem";
-            this.InfoIToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.I)));
-            this.InfoIToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
-            this.InfoIToolStripMenuItem.Text = "アプリーケーション情報(&I)";
-            this.InfoIToolStripMenuItem.Click += new System.EventHandler(this.InfoIToolStripMenuItem_Click);
             // 
             // MainForm
             // 

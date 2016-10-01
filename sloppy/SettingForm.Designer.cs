@@ -69,7 +69,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(626, 295);
+            this.saveButton.Location = new System.Drawing.Point(626, 576);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(150, 30);
             this.saveButton.TabIndex = 2;
@@ -90,7 +90,7 @@
             // returnDefaultButton
             // 
             this.returnDefaultButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.returnDefaultButton.Location = new System.Drawing.Point(7, 295);
+            this.returnDefaultButton.Location = new System.Drawing.Point(7, 576);
             this.returnDefaultButton.Name = "returnDefaultButton";
             this.returnDefaultButton.Size = new System.Drawing.Size(150, 30);
             this.returnDefaultButton.TabIndex = 11;
@@ -101,7 +101,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(470, 295);
+            this.cancelButton.Location = new System.Drawing.Point(470, 576);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(150, 30);
             this.cancelButton.TabIndex = 12;
@@ -201,7 +201,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 337);
+            this.ClientSize = new System.Drawing.Size(784, 618);
             this.Controls.Add(this.previewDumpTextBoxGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.returnDefaultButton);

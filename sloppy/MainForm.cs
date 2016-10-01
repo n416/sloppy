@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Web;
 using Microsoft.VisualBasic;
 using System.Text.RegularExpressions;
+using CefSharp;
 
 namespace sloppy
 {
@@ -80,6 +81,16 @@ namespace sloppy
             dumpTextBox.MouseDown += new MouseEventHandler(MainForm_MouseDown);
             // 翻訳表示テキストボックスにマウスムーブイベントを追加
             dumpTextBox.MouseMove += new MouseEventHandler(MainForm_MouseMove);
+
+            SelfBar f1 = new SelfBar();
+            f1.Show();
+            // 位置を設定
+            SelfBar.meInstance.Location = Settings.Instance.selfBarLocation;
+
+            EnemyBar f2 = new EnemyBar();
+            f2.Show();
+            // 位置を設定
+            EnemyBar.meInstance.Location = Settings.Instance.enemyBarLocation;
         }
 
         // フォームアクティブ
@@ -96,6 +107,8 @@ namespace sloppy
         // フォームクローズ
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Settings.Instance.selfBarLocation = SelfBar.meInstance.Location;
+            Settings.Instance.enemyBarLocation = EnemyBar.meInstance.Location;
             Settings.Instance.FormLocation = Location;
             Settings.Instance.FormSize = Size;
             Settings.SaveToXmlFile();
@@ -209,6 +222,12 @@ namespace sloppy
             // コンテナから発言だけを抜き出して、翻訳用の文字列を区切り文字でつなぐ
             string joinedString = string.Join(Constants.TranslationLogDelimiter, sourceContainer._echoList.ToArray());
 
+            // 文字列を自軍のCTシミュレータに送る
+            SelfBarAction(joinedString);
+
+            // 文字列を敵軍のCTシミュレータに送る
+            EnamyBarAction(joinedString);
+
             // 中国語固有名詞を固有名詞の接置詞＋specialWordList上の該当する中国語固有名詞のid＋固有名詞の接置詞に置換する
             // specialWordListではなくspecialWordListOfKeyDescSortでループを回しているのは、より長い文字列で先に置換する為
             foreach (KeyValuePair<string, string> kvp in specialWordListOfKeyDescSort)
@@ -241,6 +260,62 @@ namespace sloppy
             {
                 Console.WriteLine(exc.ToString());
                 return;
+            }
+        }
+
+        // 文字列を自軍のCTシミュレータに送る
+        private void SelfBarAction(string joinedString)
+        {
+            Dictionary<string, string> SelfBarActionWords = new Dictionary<string, string> { };
+            SelfBarActionWords["發出轟炸請求"] = "#timer1";
+            SelfBarActionWords["發出索敵請求"] = "#timer2";
+            SelfBarActionWords["發出米諾夫斯基粒子請求"] = "#timer3";
+            SelfBarActionWords["發出補給艦請求"] = "#timer4";
+            SelfBarActionWords["我軍皇牌機體出擊"] = "#timer5";
+            SelfBarActionWords["我軍戰艦信號已設置"] = "#timer6";
+            SelfBarActionWords["我軍戰略兵器已設置"] = "#timer7";
+            SelfBarActionWords["我軍試作型戰略兵器已設置"] = "#timer8";
+            SelfBarActionWords["我軍補給艦信號已設置"] = "#timer9";
+            SelfBarActionWords["發出地毯式轟炸請求"] = "#timer10";
+            SelfBarActionWords["發出輔助飛行系統請求"] = "#timer11";
+
+            foreach (KeyValuePair<string, string> pair in SelfBarActionWords)
+            {
+                if (joinedString.Contains(pair.Key))
+                {
+                    try
+                    {
+                        string script = @"$('" + pair.Value + @"').click();";
+                        SelfBar.chromeBrowser.ExecuteScriptAsync(script);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        // 文字列を敵軍のCTシミュレータに送る
+        private void EnamyBarAction(string joinedString)
+        {
+            Dictionary<string, string> SelfBarActionWords = new Dictionary<string, string> { };
+            SelfBarActionWords["敵軍皇牌機體"] = "#timer5";
+
+            foreach (KeyValuePair<string, string> pair in SelfBarActionWords)
+            {
+                if (joinedString.Contains(pair.Key))
+                {
+                    try
+                    {
+                        string script = @"$('" + pair.Value + @"').click();";
+                        EnemyBar.chromeBrowser.ExecuteScriptAsync(script);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                }
             }
         }
 
@@ -324,6 +399,17 @@ namespace sloppy
                 put.X = Location.X + (sizeFrameBorderSize.Width * 2);
                 put.Y = Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
                 Location = put;
+
+                if (SelfBar.meInstance != null && EnemyBar.meInstance != null) {
+                    try { 
+                        SelfBar.meInstance.Opacity  = Settings.Instance.Opacity * 0.01;
+                        EnemyBar.meInstance.Opacity = Settings.Instance.Opacity * 0.01;
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
             else
             {
@@ -341,6 +427,19 @@ namespace sloppy
                 put.X = Location.X - (sizeFrameBorderSize.Width * 2);
                 put.Y = Location.Y - (nCaptionHeight + sizeFrameBorderSize.Height * 2);
                 Location = put;
+
+                if (SelfBar.meInstance != null && EnemyBar.meInstance != null)
+                {
+                    try
+                    {
+                        SelfBar.meInstance.Opacity = 0.95;
+                        EnemyBar.meInstance.Opacity = 0.95;
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
 
             moniterringButton.Visible = !moniterringButton.Visible;

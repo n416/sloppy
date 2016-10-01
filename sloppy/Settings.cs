@@ -20,6 +20,8 @@ namespace sloppy
         private string _dumpTextBoxBackColorString; // 翻訳表示の背景色
         private string _dumpTextBoxFontName;        // 翻訳表示のフォント名
         private int    _dumpTextBoxFontSize;        // 翻訳表示のフォントサイズ
+        private Point _selfBarLocation;  // 自軍サイドフォームの表示位置
+        private Point _enemyBarLocation; // 敵軍サイドフォームの表示位置
 
         // 設定のプロパティ
         public string LogDir
@@ -64,19 +66,30 @@ namespace sloppy
             get { return _dumpTextBoxFontSize; }
             set { _dumpTextBoxFontSize = value; }
         }
-
+        public Point selfBarLocation
+        {
+            get { return _selfBarLocation; }
+            set { _selfBarLocation = value; }
+        }
+        public Point enemyBarLocation
+        {
+            get { return _enemyBarLocation; }
+            set { _enemyBarLocation = value; }
+        }
 
         //コンストラクタ
         public Settings()
         {
             _logdir               = @"C:\Program Files (x86)\Gameone\Gundam_Online\GundamOnline\chat"; 
-            _location             = new Point(0, 0);
+            _location             = new Point(600, 800);
             _formSize             = new Size(800, 320);
             _opacity              = 80;
             _dumpTextBoxForeColor = Color.FromArgb(244, 250, 244);
             _dumpTextBoxBackColor = Color.FromArgb(10, 30, 10);
             _dumpTextBoxFontName  = "メイリオ";
             _dumpTextBoxFontSize  = 12;
+            _selfBarLocation      = new Point(0, 100);
+            _enemyBarLocation     = new Point(800, 100);
         }
         [System.Xml.Serialization.XmlIgnore]
         public Color DumpTextBoxForeColor
@@ -164,7 +177,7 @@ namespace sloppy
 
         private static string GetSettingPath()
         {
-            return System.Windows.Forms.Application.StartupPath + "\\" + Application.ProductName + ".xml";
+            return Application.StartupPath + "\\" + Application.ProductName + ".xml";
         }
     
     }

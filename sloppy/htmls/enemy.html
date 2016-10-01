@@ -1,0 +1,486 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>クールタイムシミュレーター</title>
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/wow1.1.2.min.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap3.3.7.min.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+
+            var buttonImagePath = "./button_images/";
+            var statusData = {
+                "サブフライトシステム": { "activeTimeSec": 0, "coolTimeSec": 150, "fileName": "subfla" },
+                "索敵": { "activeTimeSec": 30, "coolTimeSec": 30, "fileName": "sakuteki" },
+                "ミノフスキー粒子": { "activeTimeSec": 60, "coolTimeSec": 120, "fileName": "minofu" },
+                "補給艦": { "activeTimeSec": 8, "coolTimeSec": 150, "fileName": "hokyuukan" },
+                "爆撃": { "activeTimeSec": 0, "coolTimeSec": 20, "fileName": "bakugeki" },
+                "絨毯爆撃": { "activeTimeSec": 30, "coolTimeSec": 40, "fileName": "zyuutan" },
+                "エース要請": { "activeTimeSec": 0, "coolTimeSec": 180, "fileName": "ace" },
+                "戦略兵器": { "activeTimeSec": 0, "coolTimeSec": 300, "fileName": "senryaku" },
+                "試作戦略兵器": { "activeTimeSec": 0, "coolTimeSec": 120, "fileName": "shisakugatasenryakuheiki" },
+                "補給艦ビーコン": { "activeTimeSec": 0, "coolTimeSec": 30, "fileName": "hokyuukanbeacon" },
+                "戦艦": { "activeTimeSec": 0, "coolTimeSec": 180, "fileName": "senkan" },
+            };
+
+            // ここから
+            $.prototype.start = function (params) {
+                var timer = null;
+                $("#alltime-reset").click(function () {
+                    if (timer != null) {
+                        clearInterval(timer);
+                        timer = null;
+                    }
+
+                    var allCount = 0 + parseInt($("#timeInput").val());
+                    var starFlag = -1;
+                    var eventTimer = function () {
+                        clearInterval(timer);
+                        starStopDisplay(starFlag);
+                        timer = null;
+                        if (starFlag == 1) allCount--;
+                        $("#alltime").val(allCount);
+                        alltime = formatTime(allCount);
+                        $("#alltime-moniter-minutes").text(alltime[0]);
+                        $("#alltime-moniter-second").text(alltime[1]);
+                        if (allCount > 0) {
+                            timer = setInterval(eventTimer, 1000);
+                            return;
+                        }
+                    };
+
+                    $("#alltime").val(allCount);
+                    console.log("n" + allCount);
+
+                    alltime = formatTime(allCount);
+                    $("#alltime-moniter-minutes").text(alltime[0]);
+                    $("#alltime-moniter-second").text(alltime[1]);
+                    starStopDisplay(starFlag);
+
+                    timer = setInterval(eventTimer, 1000);
+
+                    function alltimeMove(i) {
+                        allCount = allCount + i;
+                        alltime = formatTime(allCount);
+                        $("#alltime-moniter-minutes").text(alltime[0]);
+                        $("#alltime-moniter-second").text(alltime[1]);
+                        if (allCount < 0) return 0;
+                        if (allCount > 1200) return 1200;
+                        return allCount;
+                    }
+
+                    function starStopDisplay(toggleFlag) {
+                        if (toggleFlag == 1) {
+                            $("#alltime-starstop").text("タイマー動作中");
+                            return
+                        }
+                        $("#alltime-starstop").text("タイマー停止中");
+                        return;
+                    }
+                    $("#alltime-back60").click(function () { allCount = alltimeMove(60) });
+                    $("#alltime-back10").click(function () { allCount = alltimeMove(10) });
+                    $("#alltime-quick10").click(function () { allCount = alltimeMove(-10) });
+                    $("#alltime-quick60").click(function () { allCount = alltimeMove(-60) });
+                    $("#alltime-starstop").click(function () { starFlag = starFlag * -1; });
+
+                });
+
+                $("#alltime-reset").click();
+                /*                $("#alltime-starstop").click();*/
+
+            }
+
+            // ここまで
+            $.prototype.animation = function (params) {
+                var timerText = "#" + $(this).attr("id") + "-moniter";
+                var suggestText = "#" + $(this).attr("id") + "-suggest";
+                var timer = null;
+                var count = 0;
+
+                var imageFilePath = buttonImagePath + statusData[params]["fileName"] + ".png";
+                var glowImageFilePath = buttonImagePath + statusData[params]["fileName"] + "_glow.png";
+                var activeTimeMilliSec = statusData[params]["activeTimeSec"] * 1000;
+                var coolTimeSec = statusData[params]["coolTimeSec"];
+
+                var TimerButton = "#" + $(this).attr("id");
+                $(this).attr("style", "height:100%;background-image:url(" + imageFilePath + ");");
+
+                // クリックリスナーを付与
+                $(this).click(function () {
+                    count = coolTimeSec;
+                    // アニメーションCSSはクリアする
+                    $(TimerButton).removeClass("animated bounceInLeft enable");
+                    // animateは終了させる
+                    $(this).finish();
+                    // タイマーが途中なのにクリックされたパターン
+                    if (timer != null) {
+                        clearInterval(timer);
+                        timer = null;
+                        $(timerText).text('');
+                    }
+
+                    $(TimerButton).removeClass("delay");
+                    $(TimerButton).attr("style", "height:100%;background-image:url(" + glowImageFilePath + ");");
+                    $(TimerButton).removeClass("animated flash infinite");
+
+                    $(TimerButton).addClass("animated flash infinite");
+
+                    // ---------- activeTimeStart ----------
+                    $(this).animate({ opacity: 1 }, {
+                        'duration': activeTimeMilliSec, progress: progressFunction, complete: function () {
+                            // ---------- activeTimeEnd ----------
+                            // ---------- coolTimeStart ----------
+
+                            $(TimerButton).attr("style", "height:100%;background-image:url(" + imageFilePath + ");");
+                            $(TimerButton).removeClass("animated flash infinite");
+                            $(TimerButton).addClass("delay");
+
+                            // タイマー処理
+                            var eventTimer = function () {
+                                count--;
+                                // 既存のタイマーはクリア
+                                clearInterval(timer);
+                                timer = null;
+                                coolTime = formatTime(count);
+                                $(timerText).text(coolTime[0] + ':' + coolTime[1]);
+                                coolEndTime = formatTime($("#alltime").val() - count);
+                                $(suggestText).text("再使用可能時刻" + coolEndTime[0] + ":" + coolEndTime[1]);
+
+                                if (count > 0) {
+                                    timer = setInterval(eventTimer, 1000);
+                                } else {
+                                    $(suggestText).text("待機中");
+                                    $(timerText).text('');
+                                    $(TimerButton).removeClass("delay");
+                                    $(TimerButton).addClass("animated bounceInLeft enable");
+                                }
+                            };
+
+                            // 1回目のカウンタ等の描画ここから
+                            coolTime = formatTime(count);
+                            $(timerText).text(coolTime[0] + ':' + coolTime[1]);
+                            coolEndTime = formatTime($("#alltime").val() - count);
+                            $(suggestText).text("再使用可能時刻" + coolEndTime[0] + ":" + coolEndTime[1]);
+                            // 1回目のカウンタ等の描画ここまで
+
+                            timer = setInterval(eventTimer, 1000);
+
+                        }
+                    });// ---------- activeTimeCloseTags ----------
+
+                    function progressFunction(a, b, c) {
+                        if (c > 1000) {
+                            var SecCount = Math.floor(c / 1000);
+                            if ($(suggestText).text() == "効果発生中 " + SecCount + "秒") return;
+                            $(suggestText).text("効果発生中 " + SecCount + "秒");
+                        } else {
+                            $(suggestText).text("効果発生中 1秒未満");
+                        }
+                    }
+                });
+            };
+
+            function formatTime(inputInt) {
+                sec = ('0' + inputInt % 60).slice(-2);
+                min = ('0' + Math.floor(inputInt / 60)).slice(-2);
+                return [min, sec];
+            }
+
+            function decodeTime(inputSec, inputMin) {
+                return parseInt(inputSec) * 60 + parseInt(min);
+            }
+
+            $("#timer1").animation('爆撃');
+            $("#timer2").animation('索敵');
+            $("#timer3").animation('ミノフスキー粒子');
+            $("#timer4").animation('補給艦');
+            $("#timer5").animation('エース要請');
+            $("#timer6").animation('戦艦');
+            $("#timer7").animation('戦略兵器');
+            $("#timer8").animation('試作戦略兵器');
+            $("#timer9").animation('補給艦ビーコン');
+            $("#timer10").animation('絨毯爆撃');
+            $("#timer11").animation('サブフライトシステム');
+            /*            $("#timer12").animation('本拠点強襲'); */
+
+            $("#mainMoniter").start('');
+
+            $('.btn-toggle').click(function () {
+                $(this).find('.btn').toggleClass('active');
+
+                if ($(this).find('.btn-primary').size() > 0) {
+                    $(this).find('.btn').toggleClass('btn-primary');
+                }
+                if ($(this).find('.btn-danger').size() > 0) {
+                    $(this).find('.btn').toggleClass('btn-danger');
+                }
+                if ($(this).find('.btn-success').size() > 0) {
+                    $(this).find('.btn').toggleClass('btn-success');
+                }
+                if ($(this).find('.btn-info').size() > 0) {
+                    $(this).find('.btn').toggleClass('btn-info');
+                }
+
+                $(this).find('.btn').toggleClass('btn-default');
+
+            });
+        });
+
+    </script>
+    <style type="text/css">
+        div.clickzone:hover {
+            width: 210px;
+            height: 70px;
+            opacity: 0.5;
+        }
+
+        div.clickzone {
+            width: 210px;
+            height: 70px;
+            opacity: 0.9;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        div.delay {
+            background-position: bottom;
+        }
+
+        div.moniter {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            top: 40px;
+            left: 50px;
+            text-align: center;
+            font-size: 15px;
+            color: #e7ffff;
+            transform: scale( 1.6, 1 );
+            opacity: 0.9;
+        }
+
+        div.suggest {
+            position: relative;
+            left: 5px;
+            opacity: 0.75;
+            display: inline-block;
+            vertical-align: top;
+            width: calc(100% - 230px);
+        }
+
+        @keyframes flash {
+            from, 50%, 100% {
+                opacity: 1;
+            }
+
+            25%, 75% {
+                opacity: 0.5;
+            }
+        }
+
+        .popover-content {
+            padding: 9px;
+            margin: 0;
+            max-width: inherit;
+        }
+
+        .popover > .arrow:after {
+            border-width: 7px;
+        }
+
+        .popover.right > .arrow:after {
+            bottom: -7px;
+            left: 5px;
+        }
+
+        #alltime-moniter-minutes {
+            color: #e7ffff;
+            font-size: 25px;
+            position: relative;
+        }
+
+        #alltime-moniter-sep {
+            color: #e7ffff;
+            font-size: 25px;
+            position: relative;
+        }
+
+        #alltime-moniter-second {
+            color: #e7ffff;
+            font-size: 25px;
+            position: relative;
+        }
+
+        .btn-success {
+            padding: 5px;
+        }
+
+        .col-xs-12 {
+            padding: 0;
+            font-size: 0;
+            min-width: 380px;
+            text-align: center;
+        }
+
+        .popover {
+            border: none;
+        }
+
+            .popover.right {
+                margin-left: 0px;
+            }
+    </style>
+</head>
+<body style="background-color:#001100">
+    <div class="h3 text-center" style="color:#b69;background-color:#144;margin:0 0 5px 0;padding:5px; border-bottom: 3px solid #999;">敵軍側　<span style="font-size:0.5em">Enemy forces</span></div>
+    <div class="container">
+        <div class="form-group">
+            <input type="hidden" id="timeInput" class="form-control" value="1200">
+            <div class="row">
+                <div class="col-xs-12">
+                    <span id="alltime-moniter-minutes">00</span>
+                    <span id="alltime-moniter-sep">‘</span>
+                    <span id="alltime-moniter-second">00</span>
+                </div>
+                <div class="col-xs-12">
+                    <button id="alltime-back60" class="text-right btn btn-success">＜＜</button>
+                    <button id="alltime-back10" class="text-right btn btn-success">＜</button>
+                    <button id="alltime-starstop" class="text-right btn btn-success"></button>
+                    <button id="alltime-quick10" class="text-right btn btn-success">＞</button>
+                    <button id="alltime-quick60" class="text-right btn btn-success">＞＞</button>
+                    <button id="alltime-reset" class="text-right btn btn-success">リセット</button>
+                </div>
+            </div>
+            <input type="hidden" id="alltime" value="0">
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer1">
+                        <div id="timer1-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer1-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer2">
+                        <div id="timer2-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer2-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer3">
+                        <div id="timer3-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer3-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer4">
+                        <div id="timer4-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer4-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer5">
+                        <div id="timer5-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer5-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer6">
+                        <div id="timer6-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer6-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer7">
+                        <div id="timer7-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer7-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer8">
+                        <div id="timer8-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer8-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer9">
+                        <div id="timer9-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer9-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer10">
+                        <div id="timer10-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer10-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="clickzone">
+                    <div id="timer11">
+                        <div id="timer11-moniter" class="moniter"></div>
+                    </div>
+                </div>
+                <div class="suggest popover right">
+                    <div class="arrow"></div>
+                    <div id="timer11-suggest" class="popover-content">待機中</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
