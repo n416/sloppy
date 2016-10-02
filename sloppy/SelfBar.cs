@@ -34,7 +34,7 @@ namespace sloppy
             chromeBrowser.Name = "chromeBrowser";
             chromeBrowser.RequestHandler = new MyRequestHandler();
             panel1.Controls.Add(chromeBrowser);
-            Size = new Size(550, 1000);
+            Size = new Size(400, 780);
             chromeBrowser.MouseDown += new MouseEventHandler(SelfBar_MouseDown);
             chromeBrowser.MouseMove += new MouseEventHandler(SelfBar_MouseMove);
             meInstance = this;
