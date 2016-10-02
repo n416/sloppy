@@ -19,9 +19,9 @@
 ## ログの翻訳＋クールタイムシミュレーター付きの最新バージョン
  2ファイルになってしまいましたが・・・同じディレクトリで展開してsloppy.exeを起動してください。
 
-  [1.3.0.0のビルド済1](https://github.com/n416/sloppy/blob/master/sloppy1.3.0.0_01.zip "1.3.0.0のビルド済1")
+  [1.3.1.0のビルド済1](https://github.com/n416/sloppy/blob/master/sloppy1.3.1.0_01.zip "1.3.1.0のビルド済1")
 
-  [1.3.0.0のビルド済2](https://github.com/n416/sloppy/blob/master/sloppy1.3.0.0_02.zip "1.3.0.0のビルド済2")
+  [1.3.1.0のビルド済2](https://github.com/n416/sloppy/blob/master/sloppy1.3.1.0_02.zip "1.3.1.0のビルド済2")
 
 
 ## フィルターに足りないものがあればお気軽に書き込みどうぞ
