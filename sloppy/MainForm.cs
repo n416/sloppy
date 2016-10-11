@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Web;
 using Microsoft.VisualBasic;
 using System.Text.RegularExpressions;
-using CefSharp;
+using static sloppy.TacticalForm;
 
 namespace sloppy
 {
@@ -41,6 +41,10 @@ namespace sloppy
         // 中国語固有名詞→日本語固有名詞 変換リストの中国語固有名詞の文字長で降順で並び替えたリスト
         private List<KeyValuePair<string, string>> specialWordListOfKeyDescSort;
 
+        public static MainForm meInstance = null;
+        public TacticalForm selfTacticalForm = new TacticalForm(TacticalForm.ModeSelf);
+        public TacticalForm enemyTacticalForm = new TacticalForm(TacticalForm.ModeEnemy);
+
         // フォームコンストラクタ
         public MainForm()
         {
@@ -57,6 +61,8 @@ namespace sloppy
             specialWordListOfKeyDescSort = new List<KeyValuePair<string, string>>(specialWordList);
             // 文字長で降順ソート
             specialWordListOfKeyDescSort.Sort(CompareKeyLengthDesc);
+
+            meInstance = this;
 
         }
 
@@ -82,35 +88,33 @@ namespace sloppy
             // 翻訳表示テキストボックスにマウスムーブイベントを追加
             dumpTextBox.MouseMove += new MouseEventHandler(MainForm_MouseMove);
 
-            SelfBar f1 = new SelfBar();
-            f1.Show();
-            // 位置を設定
-            SelfBar.meInstance.Location = Settings.Instance.selfBarLocation;
-
-            EnemyBar f2 = new EnemyBar();
-            f2.Show();
-            // 位置を設定
-            EnemyBar.meInstance.Location = Settings.Instance.enemyBarLocation;
+            Weapons.initialize();
+            selfTacticalForm.Show();
+            enemyTacticalForm.Show();
         }
 
         // フォームアクティブ
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            // 翻訳表示テキストボックスのフォントを設定
-            dumpTextBox.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
-            // 翻訳表示テキストボックスのフォント色を設定
-            dumpTextBox.ForeColor = Settings.Instance.DumpTextBoxForeColor;
-            // 翻訳表示テキストボックスの背景色を設定
-            dumpTextBox.BackColor = Settings.Instance.DumpTextBoxBackColor;
+            if (RefleshFlag == true) {
+                // 翻訳表示テキストボックスのフォントを設定
+                MainForm.meInstance.dumpTextBox.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
+                // 翻訳表示テキストボックスのフォント色を設定
+                MainForm.meInstance.dumpTextBox.ForeColor = Settings.Instance.DumpTextBoxForeColor;
+                // 翻訳表示テキストボックスの背景色を設定
+                MainForm.meInstance.dumpTextBox.BackColor = Settings.Instance.DumpTextBoxBackColor;
+            }
         }
 
         // フォームクローズ
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Instance.selfBarLocation = SelfBar.meInstance.Location;
-            Settings.Instance.enemyBarLocation = EnemyBar.meInstance.Location;
             Settings.Instance.FormLocation = Location;
             Settings.Instance.FormSize = Size;
+            Settings.Instance.selfBarLocation = selfTacticalForm.Location;
+            Settings.Instance.selfBarFormSize = selfTacticalForm.Size;
+            Settings.Instance.enemyBarLocation = enemyTacticalForm.Location;
+            Settings.Instance.enemyBarFormSize = enemyTacticalForm. Size;
             Settings.SaveToXmlFile();
         }
 
@@ -161,6 +165,8 @@ namespace sloppy
         // 最前面オプションチェックボックス
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+            selfTacticalForm.TopMost = !TopMost;
+            enemyTacticalForm.TopMost = !TopMost;
             TopMost = !TopMost;
         }
 
@@ -266,32 +272,34 @@ namespace sloppy
         // 文字列を自軍のCTシミュレータに送る
         private void SelfBarAction(string joinedString)
         {
-            Dictionary<string, string> SelfBarActionWords = new Dictionary<string, string> { };
-            SelfBarActionWords["發出轟炸請求"] = "#timer1";
-            SelfBarActionWords["發出索敵請求"] = "#timer2";
-            SelfBarActionWords["發出米諾夫斯基粒子請求"] = "#timer3";
-            SelfBarActionWords["發出補給艦請求"] = "#timer4";
-            SelfBarActionWords["我軍皇牌機體出擊"] = "#timer5";
-            SelfBarActionWords["我軍戰艦信號已設置"] = "#timer6";
-            SelfBarActionWords["我軍戰略兵器已設置"] = "#timer7";
-            SelfBarActionWords["我軍試作型戰略兵器已設置"] = "#timer8";
-            SelfBarActionWords["我軍補給艦信號已設置"] = "#timer9";
-            SelfBarActionWords["發出地毯式轟炸請求"] = "#timer10";
-            SelfBarActionWords["發出輔助飛行系統請求"] = "#timer11";
+            Dictionary<string, string[]> SelfBarActionWords = new Dictionary<string, string[]> { };
+            SelfBarActionWords["發出索敵請求"]             = new string[] { "索敵", "coolTime" };
+            SelfBarActionWords["發出米諾夫斯基粒子請求"]   = new string[] { "ミノフスキー粒子", "coolTime" };
+            SelfBarActionWords["發出補給艦請求"]           = new string[] { "補給艦", "coolTime" };
+            SelfBarActionWords["發出轟炸請求"]             = new string[] { "爆撃", "coolTime" };
+            SelfBarActionWords["發出地毯式轟炸請求"]       = new string[] { "絨毯爆撃", "coolTime" };
+            SelfBarActionWords["我軍皇牌機體出擊"]         = new string[] { "エース要請", "coolTime" };
+            SelfBarActionWords["我軍戰略兵器已設置"]       = new string[] { "戦略兵器", "setup" };
+            SelfBarActionWords["變更了戰略兵器的目標地點"] = new string[] { "戦略兵器", "preparationTimeSec" };
+            SelfBarActionWords["戰略兵器啟動確認"]         = new string[] { "戦略兵器", "active" };
+            SelfBarActionWords["戰略兵器已被破壞"]         = new string[] { "戦略兵器", "coolTime" };
+            SelfBarActionWords["發出試作型戰略兵器請求"]   = new string[] { "試作戦略兵器", "coolTime" };
+            SelfBarActionWords["我軍補給艦信號已設置"]     = new string[] { "補給艦ビーコン", "coolTime" };
+            SelfBarActionWords["我軍戰艦信號已設置"]       = new string[] { "戦艦", "preparationTimeSec" };
+            SelfBarActionWords["我軍戰艦出擊"]             = new string[] { "戦艦", "active" };
+            SelfBarActionWords["我軍戰艦已被破壞"]         = new string[] { "戦艦", "coolTime" };
+            SelfBarActionWords["發出輔助飛行系統請求"]     = new string[] { "サブフライトシステム", "coolTime" };
 
-            foreach (KeyValuePair<string, string> pair in SelfBarActionWords)
+            SelfBarActionWords["發出特務皇牌請求"]         = new string[] { "特務エース", "coolTime" };
+
+            foreach (KeyValuePair<string, string[]> pair in SelfBarActionWords)
             {
-                if (joinedString.Contains(pair.Key))
+                if (!joinedString.Contains(pair.Key)) continue;
+                for (int i = 0; i < selfTacticalForm.gridBacks.Count; i++)
                 {
-                    try
-                    {
-                        string script = @"$('" + pair.Value + @"').click();";
-                        SelfBar.chromeBrowser.ExecuteScriptAsync(script);
-                    }
-                    catch
-                    {
-                        return;
-                    }
+                    if (selfTacticalForm.gridBacks[i].caption != pair.Value[0]) continue;
+                    selfTacticalForm.gridBacks[i].status = Weapons.getStatus(pair.Value[0], pair.Value[1], selfTacticalForm.allSec);
+                    selfTacticalForm.myInstance.gridRewrite();
                 }
             }
         }
@@ -299,22 +307,21 @@ namespace sloppy
         // 文字列を敵軍のCTシミュレータに送る
         private void EnamyBarAction(string joinedString)
         {
-            Dictionary<string, string> SelfBarActionWords = new Dictionary<string, string> { };
-            SelfBarActionWords["敵軍皇牌機體"] = "#timer5";
+            Dictionary<string, string[]> EnemyBarActionWords = new Dictionary<string, string[]> { };
 
-            foreach (KeyValuePair<string, string> pair in SelfBarActionWords)
+            EnemyBarActionWords["敵軍皇牌機體"] = new string[] { "エース要請", "coolTime" };
+            EnemyBarActionWords["敵軍戰略兵器啟動"] = new string[] { "戦略兵器", "active" };
+            EnemyBarActionWords["成功破壞敵軍戰略兵器"] = new string[] { "戦略兵器", "coolTime" };
+                EnemyBarActionWords["成功破壞敵軍戰艦"] = new string[] { "戦艦", "coolTime" };
+
+            foreach (KeyValuePair<string, string[]> pair in EnemyBarActionWords)
             {
-                if (joinedString.Contains(pair.Key))
+                if (!joinedString.Contains(pair.Key)) continue;
+                for (int i = 0; i < enemyTacticalForm.gridBacks.Count; i++)
                 {
-                    try
-                    {
-                        string script = @"$('" + pair.Value + @"').click();";
-                        EnemyBar.chromeBrowser.ExecuteScriptAsync(script);
-                    }
-                    catch
-                    {
-                        return;
-                    }
+                    if (enemyTacticalForm.gridBacks[i].caption != pair.Value[0]) continue;
+                    enemyTacticalForm.gridBacks[i].status = Weapons.getStatus(pair.Value[0], pair.Value[1], enemyTacticalForm.allSec);
+                    enemyTacticalForm.myInstance.gridRewrite();
                 }
             }
         }
@@ -394,22 +401,23 @@ namespace sloppy
                 dumpTextBox.Width  = dumpTextBox.Width + sideAreaWidth;
 
                 Opacity = Settings.Instance.Opacity * 0.01;
+                selfTacticalForm.Opacity = Settings.Instance.Opacity * 0.01;
+                enemyTacticalForm.Opacity = Settings.Instance.Opacity * 0.01;
 
                 FormBorderStyle = FormBorderStyle.None;
                 put.X = Location.X + (sizeFrameBorderSize.Width * 2);
                 put.Y = Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
                 Location = put;
 
-                if (SelfBar.meInstance != null && EnemyBar.meInstance != null) {
-                    try { 
-                        SelfBar.meInstance.Opacity  = Settings.Instance.Opacity * 0.01;
-                        EnemyBar.meInstance.Opacity = Settings.Instance.Opacity * 0.01;
-                    }
-                    catch
-                    {
+                selfTacticalForm.myInstance.FormBorderStyle = FormBorderStyle.None;
+                put.X = selfTacticalForm.Location.X + (sizeFrameBorderSize.Width * 2);
+                put.Y = selfTacticalForm.Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
+                selfTacticalForm.Location = put;
 
-                    }
-                }
+                enemyTacticalForm.myInstance.FormBorderStyle = FormBorderStyle.None;
+                put.X = enemyTacticalForm.Location.X + (sizeFrameBorderSize.Width * 2);
+                put.Y = enemyTacticalForm.Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
+                enemyTacticalForm.Location = put;
             }
             else
             {
@@ -422,24 +430,23 @@ namespace sloppy
                 dumpTextBox.Width  = dumpTextBox.Width - sideAreaWidth;
 
                 Opacity = 0.95;
+                selfTacticalForm.Opacity = 0.95;
+                enemyTacticalForm.Opacity = 0.95;
 
                 FormBorderStyle = FormBorderStyle.Sizable;
                 put.X = Location.X - (sizeFrameBorderSize.Width * 2);
                 put.Y = Location.Y - (nCaptionHeight + sizeFrameBorderSize.Height * 2);
                 Location = put;
 
-                if (SelfBar.meInstance != null && EnemyBar.meInstance != null)
-                {
-                    try
-                    {
-                        SelfBar.meInstance.Opacity = 0.95;
-                        EnemyBar.meInstance.Opacity = 0.95;
-                    }
-                    catch
-                    {
+                selfTacticalForm.myInstance.FormBorderStyle = FormBorderStyle.Sizable;
+                put.X = selfTacticalForm.Location.X - (sizeFrameBorderSize.Width * 2);
+                put.Y = selfTacticalForm.Location.Y - (nCaptionHeight + sizeFrameBorderSize.Height * 2);
+                selfTacticalForm.Location = put;
 
-                    }
-                }
+                enemyTacticalForm.myInstance.FormBorderStyle = FormBorderStyle.Sizable;
+                put.X = enemyTacticalForm.Location.X - (sizeFrameBorderSize.Width * 2);
+                put.Y = enemyTacticalForm.Location.Y - (nCaptionHeight + sizeFrameBorderSize.Height * 2);
+                enemyTacticalForm.Location = put;
             }
 
             moniterringButton.Visible = !moniterringButton.Visible;
@@ -559,6 +566,11 @@ namespace sloppy
             AboutBox f = new AboutBox();
             f.ShowDialog(this);
             f.Dispose();
+
+        }
+
+        private void dumpTextBox_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }

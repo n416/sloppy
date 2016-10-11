@@ -22,6 +22,8 @@ namespace sloppy
         private int    _dumpTextBoxFontSize;        // 翻訳表示のフォントサイズ
         private Point _selfBarLocation;  // 自軍サイドフォームの表示位置
         private Point _enemyBarLocation; // 敵軍サイドフォームの表示位置
+        private Size _selfBarFormSize;   // 自軍サイドフォームの縦横サイズ
+        private Size _enemyBarFormSize;  // 敵軍サイドフォームの縦横サイズ
 
         // 設定のプロパティ
         public string LogDir
@@ -76,6 +78,16 @@ namespace sloppy
             get { return _enemyBarLocation; }
             set { _enemyBarLocation = value; }
         }
+        public Size selfBarFormSize
+        {
+            get { return _selfBarFormSize; }
+            set { _selfBarFormSize = value; }
+        }
+        public Size enemyBarFormSize
+        {
+            get { return _enemyBarFormSize; }
+            set { _enemyBarFormSize = value; }
+        }
 
         //コンストラクタ
         public Settings()
@@ -88,8 +100,11 @@ namespace sloppy
             _dumpTextBoxBackColor = Color.FromArgb(10, 30, 10);
             _dumpTextBoxFontName  = "メイリオ";
             _dumpTextBoxFontSize  = 12;
-            _selfBarLocation      = new Point(0, 100);
-            _enemyBarLocation     = new Point(800, 100);
+            _selfBarLocation      = new Point(1500, 300);
+            _enemyBarLocation     = new Point(300, 300);
+            _selfBarFormSize      = new Size(275, 400);
+            _enemyBarFormSize     = new Size(275, 400);
+            
         }
         [System.Xml.Serialization.XmlIgnore]
         public Color DumpTextBoxForeColor

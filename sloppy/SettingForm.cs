@@ -63,6 +63,10 @@ namespace sloppy
 
             MainForm fm = (MainForm)this.Owner;
             fm.RefleshFlag = true;
+            fm.selfTacticalForm.RefleshFlag = true;
+            fm.enemyTacticalForm.RefleshFlag = true;
+            fm.selfTacticalForm.TacticalForm_backcolorChange();
+            fm.enemyTacticalForm.TacticalForm_backcolorChange();
             Close();
         }
 
@@ -178,6 +182,16 @@ namespace sloppy
         private void cancelButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void SettingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // 翻訳表示テキストボックスのフォントを設定
+            MainForm.meInstance.dumpTextBox.Font = new Font(Settings.Instance.DumpTextBoxFontName, Settings.Instance.DumpTextBoxFontSize);
+            // 翻訳表示テキストボックスのフォント色を設定
+            MainForm.meInstance.dumpTextBox.ForeColor = Settings.Instance.DumpTextBoxForeColor;
+            // 翻訳表示テキストボックスの背景色を設定
+            MainForm.meInstance.dumpTextBox.BackColor = Settings.Instance.DumpTextBoxBackColor;
         }
     }
 }

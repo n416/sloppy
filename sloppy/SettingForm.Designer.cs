@@ -10,7 +10,7 @@
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param label="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -69,7 +69,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(626, 576);
+            this.saveButton.Location = new System.Drawing.Point(626, 292);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(150, 30);
             this.saveButton.TabIndex = 2;
@@ -90,7 +90,7 @@
             // returnDefaultButton
             // 
             this.returnDefaultButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.returnDefaultButton.Location = new System.Drawing.Point(7, 576);
+            this.returnDefaultButton.Location = new System.Drawing.Point(7, 292);
             this.returnDefaultButton.Name = "returnDefaultButton";
             this.returnDefaultButton.Size = new System.Drawing.Size(150, 30);
             this.returnDefaultButton.TabIndex = 11;
@@ -101,7 +101,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(470, 576);
+            this.cancelButton.Location = new System.Drawing.Point(470, 292);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(150, 30);
             this.cancelButton.TabIndex = 12;
@@ -201,7 +201,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 618);
+            this.ClientSize = new System.Drawing.Size(784, 334);
             this.Controls.Add(this.previewDumpTextBoxGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.returnDefaultButton);
@@ -213,6 +213,7 @@
             this.MaximizeBox = false;
             this.Name = "SettingForm";
             this.Text = "設定";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingForm_FormClosing);
             this.Load += new System.EventHandler(this.SettingForm_Load);
             this.previewDumpTextBoxGroupBox.ResumeLayout(false);
             this.previewDumpTextBoxGroupBox.PerformLayout();

@@ -10,7 +10,7 @@
         /// <summary>
         /// 使用中のリソースをすべてクリーンアップします。
         /// </summary>
-        /// <param name="disposing">マネージ リソースを破棄する場合は true を指定し、その他の場合は false を指定します。</param>
+        /// <param label="disposing">マネージ リソースを破棄する場合は true を指定し、その他の場合は false を指定します。</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -65,6 +65,7 @@
             this.dumpTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.dumpTextBox.Size = new System.Drawing.Size(616, 229);
             this.dumpTextBox.TabIndex = 3;
+            this.dumpTextBox.TextChanged += new System.EventHandler(this.dumpTextBox_TextChanged);
             this.dumpTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dumpTextBox_KeyDown);
             // 
             // styleChangeButton
@@ -261,7 +262,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox dumpTextBox;
+        public System.Windows.Forms.TextBox dumpTextBox;
         private System.Windows.Forms.Button styleChangeButton;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel monitoringStatusLabel;
