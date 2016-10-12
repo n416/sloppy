@@ -37,6 +37,7 @@
             this.inputLabel = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.timerPreview = new System.Windows.Forms.Label();
+            this.statusResetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,9 +81,9 @@
             // 
             // timeSettingButton
             // 
-            this.timeSettingButton.Location = new System.Drawing.Point(158, 0);
+            this.timeSettingButton.Location = new System.Drawing.Point(125, 3);
             this.timeSettingButton.Name = "timeSettingButton";
-            this.timeSettingButton.Size = new System.Drawing.Size(95, 33);
+            this.timeSettingButton.Size = new System.Drawing.Size(79, 33);
             this.timeSettingButton.TabIndex = 7;
             this.timeSettingButton.Text = "時刻合わせ";
             this.timeSettingButton.UseVisualStyleBackColor = true;
@@ -90,10 +91,11 @@
             // 
             // inputText
             // 
+            this.inputText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.inputText.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.inputText.Location = new System.Drawing.Point(39, 2);
+            this.inputText.Location = new System.Drawing.Point(36, 4);
             this.inputText.Name = "inputText";
-            this.inputText.Size = new System.Drawing.Size(113, 31);
+            this.inputText.Size = new System.Drawing.Size(82, 31);
             this.inputText.TabIndex = 6;
             this.inputText.Text = "1950";
             this.inputText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -101,7 +103,7 @@
             // inputLabel
             // 
             this.inputLabel.AutoSize = true;
-            this.inputLabel.Location = new System.Drawing.Point(4, 12);
+            this.inputLabel.Location = new System.Drawing.Point(5, 14);
             this.inputLabel.Name = "inputLabel";
             this.inputLabel.Size = new System.Drawing.Size(29, 12);
             this.inputLabel.TabIndex = 5;
@@ -116,17 +118,26 @@
             // 
             this.timerPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.timerPreview.AutoSize = true;
-            this.timerPreview.BackColor = System.Drawing.Color.Transparent;
+            this.timerPreview.BackColor = System.Drawing.Color.Black;
+            this.timerPreview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.timerPreview.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.timerPreview.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.timerPreview.Location = new System.Drawing.Point(72, 36);
+            this.timerPreview.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.timerPreview.Location = new System.Drawing.Point(0, 39);
             this.timerPreview.Name = "timerPreview";
             this.timerPreview.Padding = new System.Windows.Forms.Padding(5);
-            this.timerPreview.Size = new System.Drawing.Size(122, 34);
+            this.timerPreview.Size = new System.Drawing.Size(258, 34);
             this.timerPreview.TabIndex = 8;
-            this.timerPreview.Text = "timerPreview";
             this.timerPreview.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // statusResetButton
+            // 
+            this.statusResetButton.Location = new System.Drawing.Point(208, 3);
+            this.statusResetButton.Name = "statusResetButton";
+            this.statusResetButton.Size = new System.Drawing.Size(46, 33);
+            this.statusResetButton.TabIndex = 9;
+            this.statusResetButton.Text = "リセット";
+            this.statusResetButton.UseVisualStyleBackColor = true;
+            this.statusResetButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // TacticalForm
             // 
@@ -134,6 +145,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(258, 361);
             this.ControlBox = false;
+            this.Controls.Add(this.statusResetButton);
             this.Controls.Add(this.timerPreview);
             this.Controls.Add(this.timeSettingButton);
             this.Controls.Add(this.inputText);
@@ -165,5 +177,6 @@
         private System.Windows.Forms.Label timerPreview;
         private System.Windows.Forms.DataGridViewTextBoxColumn label;
         private System.Windows.Forms.DataGridViewTextBoxColumn time;
+        private System.Windows.Forms.Button statusResetButton;
     }
 }

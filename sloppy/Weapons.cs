@@ -67,7 +67,7 @@ namespace sloppy
             minovskyWeaponStatuses.Add(readyStatus);
             minovskyWeaponStatuses.Add(new WeaponStatusModel("active", 60));
             minovskyWeaponStatuses.Add(new WeaponStatusModel("coolTime", 90, Color.Red));
-            WeaponModel minovskyWeapon = new WeaponModel(minovskyWeaponStatuses, "ミノフスキー粒子");
+            WeaponModel minovskyWeapon = new WeaponModel(minovskyWeaponStatuses, "ﾐﾉﾌｽｷｰ粒子");
 
             // 補給艦
             List<WeaponStatusModel> supplyVesselWeaponStatuses = new List<WeaponStatusModel>();
@@ -114,7 +114,7 @@ namespace sloppy
             List<WeaponStatusModel> supplyVesselBeaconStatuses = new List<WeaponStatusModel>();
             supplyVesselBeaconStatuses.Add(readyStatus);
             supplyVesselBeaconStatuses.Add(new WeaponStatusModel("coolTime", 30, Color.Red));
-            WeaponModel supplyVesselBeaconWeapon = new WeaponModel(supplyVesselBeaconStatuses, "補給艦ビーコン");
+            WeaponModel supplyVesselBeaconWeapon = new WeaponModel(supplyVesselBeaconStatuses, "補給艦ﾋﾞｰｺﾝ");
 
             // 戦艦
             List<WeaponStatusModel> battleshipStatuses = new List<WeaponStatusModel>();
@@ -128,7 +128,7 @@ namespace sloppy
             List<WeaponStatusModel> subFlightSystemStatuses = new List<WeaponStatusModel>();
             subFlightSystemStatuses.Add(readyStatus);
             subFlightSystemStatuses.Add(new WeaponStatusModel("coolTime", 150, Color.Red));
-            WeaponModel subFlightSystemWeapon = new WeaponModel(subFlightSystemStatuses, "サブフライトシステム");
+            WeaponModel subFlightSystemWeapon = new WeaponModel(subFlightSystemStatuses, "ｻﾌﾞﾌﾗｲﾄｼｽﾃﾑ");
 
             // 特務エース
             List<WeaponStatusModel> secretMilitarySystemStatuses = new List<WeaponStatusModel>();

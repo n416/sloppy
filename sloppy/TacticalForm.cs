@@ -102,6 +102,7 @@ namespace sloppy
             if (v == false) { 
                 inputLabel.Visible = false;
                 inputText.Visible = false;
+                statusResetButton.Visible = false;
                 timeSettingButton.Visible = false;
                 timerPreview.Visible = false;
 
@@ -118,6 +119,7 @@ namespace sloppy
                 inputLabel.Visible = true;
                 inputText.Visible = true;
                 timeSettingButton.Visible = true;
+                statusResetButton.Visible = true;
                 timerPreview.Visible = true;
 
                 dataGridView.Location = new Point(0, 73);
@@ -308,6 +310,20 @@ namespace sloppy
                 dataGridView.DefaultCellStyle.SelectionBackColor = Settings.Instance.DumpTextBoxBackColor;
                 dataGridView.BackgroundColor = Settings.Instance.DumpTextBoxBackColor;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int i = 0;
+            foreach (WeaponModel Weapon in Weapons.allList)
+            {
+                WeaponStatusModel st = Weapon.statusList[0];// ステータスの初期値を0固定とする
+                st.setEndingTime(MainForm.meInstance.selfTacticalForm.allSec);
+                MainForm.meInstance.selfTacticalForm.gridBacks[i].status = st;
+                MainForm.meInstance.enemyTacticalForm.gridBacks[i].status = st;
+                i++;
+            }
+            gridRewrite();
         }
     }
 
