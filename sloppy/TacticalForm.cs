@@ -80,21 +80,7 @@ namespace sloppy
 
             if(mode == ModeEnemy)
             {
-                Size sizeFrameBorderSize = SystemInformation.FrameBorderSize;
-
-                inputLabel.Visible = false;
-                inputText.Visible = false;
-                timeSettingButton.Visible = false;
-                timerPreview.Visible = false;
-                dataGridView.Location = new Point(0, 0);
-                dataGridView.Height = Height - (SystemInformation.CaptionHeight + sizeFrameBorderSize.Height * 2);
-
-                int nCaptionHeight = SystemInformation.CaptionHeight;
-                Point put = new Point(0, 0);
-                put.X = Location.X + (sizeFrameBorderSize.Width * 2);
-                put.Y = Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
-                Location = put;
-
+                inputGroupVisible(false);
             }
 
             // グリッドビューにマウスダウンイベントを追加
@@ -104,6 +90,49 @@ namespace sloppy
 
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView.Font = new Font("メイリオ", 11);
+
+        }
+
+        public void inputGroupVisible(bool v)
+        {
+            Size sizeFrameBorderSize = SystemInformation.FrameBorderSize;
+            int nCaptionHeight = SystemInformation.CaptionHeight;
+            Point put = new Point(0, 0);
+
+            if (v == false) { 
+                inputLabel.Visible = false;
+                inputText.Visible = false;
+                timeSettingButton.Visible = false;
+                timerPreview.Visible = false;
+
+                dataGridView.Location = new Point(0, 0);
+                dataGridView.Height = Height - (SystemInformation.CaptionHeight + sizeFrameBorderSize.Height * 2);
+                if (mode == ModeSelf) dataGridView.Height += 32;
+
+                put.X = Location.X + (sizeFrameBorderSize.Width * 2);
+                put.Y = Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
+                Location = put;
+            }
+            else
+            {
+                inputLabel.Visible = true;
+                inputText.Visible = true;
+                timeSettingButton.Visible = true;
+                timerPreview.Visible = true;
+
+                dataGridView.Location = new Point(0, 73);
+                dataGridView.Height = (Height - (SystemInformation.CaptionHeight + sizeFrameBorderSize.Height * 2)) - 73;
+
+                put.X = Location.X + (sizeFrameBorderSize.Width * 2);
+                put.Y = Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
+                if (mode == ModeSelf)
+                {
+                    put.X -= 16;
+                    put.Y -= 62;
+                }
+                Location = put;
+
+            }
 
         }
 
@@ -162,6 +191,7 @@ namespace sloppy
             }
 
         }
+
         private void timeSettingButton_Click(object sender, EventArgs e)
         {
             if(timer.Enabled == false)
@@ -209,7 +239,6 @@ namespace sloppy
             MainForm.meInstance.selfTacticalForm.allSec--;
         }
 
-
         private string IntToTime(int intTime)
         {
             double d = intTime / 60;
@@ -219,6 +248,7 @@ namespace sloppy
             return min.ToString() + "'" + sec.ToString().PadLeft(2, '0');
 
         }
+
         private int TimeToInt(string stringTime)
         {
             Regex regex = new Regex(@"[^0-9]");

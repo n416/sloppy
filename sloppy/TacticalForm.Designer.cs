@@ -55,12 +55,13 @@
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.label,
             this.time});
-            this.dataGridView.Location = new System.Drawing.Point(-10, 73);
+            this.dataGridView.Location = new System.Drawing.Point(0, 73);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersVisible = false;
+            this.dataGridView.RowHeadersWidth = 38;
             this.dataGridView.RowTemplate.Height = 21;
-            this.dataGridView.Size = new System.Drawing.Size(280, 288);
+            this.dataGridView.Size = new System.Drawing.Size(258, 288);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellContentClick);
             this.dataGridView.Resize += new System.EventHandler(this.dataGridView1_Resize);
@@ -141,6 +142,7 @@
             this.Name = "TacticalForm";
             this.Opacity = 0.95D;
             this.Text = "TacticalForm";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TacticalForm_FormClosing);
             this.Load += new System.EventHandler(this.TacticalForm_Load);
             this.Shown += new System.EventHandler(this.TacticalForm_Shown);
