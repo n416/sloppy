@@ -223,7 +223,7 @@ namespace sloppy
             resultString = resultString.Replace("\r\n[", Constants.TranslationLogDelimiter + "[");
 
             // 取得した文字列をログコンテナに格納
-            logContainer sourceContainer = new logContainer(resultString);
+            logContainer sourceContainer = new logContainer(resultString, 5, 60);
 
             // コンテナから発言だけを抜き出して、翻訳用の文字列を区切り文字でつなぐ
             string joinedString = string.Join(Constants.TranslationLogDelimiter, sourceContainer._echoList.ToArray());
@@ -581,7 +581,7 @@ namespace sloppy
     static class Constants
     {
         public const string SpecialWordAdposition = "\r♦♦\r"; // 固有名詞の接置詞（前置詞と後置詞）
-        public const string TranslationLogDelimiter = "@@@@@@\r";//このデリミターは、日本語変換掛けられた時に前後の文面でも位置すら変化しないものを設定する必要がある。とっても面倒だけど、いろいろ調べてこれに落ち着いた。例えばブラウザで表示した段階で\nが無くなったり、@@@@だけだと、hoge@@@@hogeがhogehoge@@@@とかに変換されたりといろいろあった。
+        public const string TranslationLogDelimiter = "♥♥♥\r";//このデリミターは、日本語変換掛けられた時に前後の文面でも位置すら変化しないものを設定する必要がある。とっても面倒だけど、いろいろ調べてこれに落ち着いた。例えばブラウザで表示した段階で\nが無くなったり、@@@@だけだと、hoge@@@@hogeがhogehoge@@@@とかに変換されたりといろいろあった。
         public const string TranslateGooglSourceXpath = "//textarea[@id=\"source\"]";
         public const string TranslateGoogleResultXpath = "//span[@id=\"result_box\"]";
     }

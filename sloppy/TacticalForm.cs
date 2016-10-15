@@ -129,8 +129,12 @@ namespace sloppy
                 dataGridView[0, row.rowIndex].Style.Padding = new Padding(20, 0, 10, 0);
 
                 string outputValue = "";
+                // 特別に書き込む文言がある場合
                 if (row.status.specialText != "") outputValue = outputValue + row.status.specialText;
-                if (row.status.time != 0) outputValue = outputValue + ":" + IntToTime(row.status.endingTime);
+                // CTがある場合
+                if (row.status.time != 0) outputValue = ((outputValue == "")?":":"") + IntToTime(row.status.endingTime);
+                // CTが終了時間よりも先の場合
+                if (row.status.endingTime < 0) outputValue = "-";
                 dataGridView[1, row.rowIndex].Value = outputValue;
                 dataGridView[1, row.rowIndex].Style.ForeColor = row.status.forColor;
             }
