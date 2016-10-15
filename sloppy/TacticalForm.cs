@@ -284,6 +284,7 @@ namespace sloppy
 
         private void TacticalForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            e.Cancel = true;
         }
 
 
