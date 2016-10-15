@@ -413,7 +413,7 @@ namespace sloppy
                 put.X = selfTacticalForm.Location.X + (sizeFrameBorderSize.Width * 2);
                 put.Y = selfTacticalForm.Location.Y + (nCaptionHeight + sizeFrameBorderSize.Height * 2);
                 selfTacticalForm.Location = put;
-                selfTacticalForm.inputGroupVisible(false);
+                selfTacticalForm.controlGroupVisible(false);
 
                 enemyTacticalForm.myInstance.FormBorderStyle = FormBorderStyle.None;
                 put.X = enemyTacticalForm.Location.X + (sizeFrameBorderSize.Width * 2);
@@ -443,7 +443,7 @@ namespace sloppy
                 put.X = selfTacticalForm.Location.X - (sizeFrameBorderSize.Width * 2);
                 put.Y = selfTacticalForm.Location.Y - (nCaptionHeight + sizeFrameBorderSize.Height * 2);
                 selfTacticalForm.Location = put;
-                selfTacticalForm.inputGroupVisible(true);
+                selfTacticalForm.controlGroupVisible(true);
 
                 enemyTacticalForm.myInstance.FormBorderStyle = FormBorderStyle.Sizable;
                 put.X = enemyTacticalForm.Location.X - (sizeFrameBorderSize.Width * 2);

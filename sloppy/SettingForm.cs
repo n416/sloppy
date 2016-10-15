@@ -65,8 +65,8 @@ namespace sloppy
             fm.RefleshFlag = true;
             fm.selfTacticalForm.RefleshFlag = true;
             fm.enemyTacticalForm.RefleshFlag = true;
-            fm.selfTacticalForm.TacticalForm_backcolorChange();
-            fm.enemyTacticalForm.TacticalForm_backcolorChange();
+            fm.selfTacticalForm.setingDeployAction();
+            fm.enemyTacticalForm.setingDeployAction();
             Close();
         }
 

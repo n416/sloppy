@@ -38,33 +38,15 @@ namespace sloppy
 
         private void TacticalForm_Load(object sender, EventArgs e)
         {
-            // 設定の読み込み
-            if (mode == ModeEnemy)
-            {
-                Location = Settings.Instance.enemyBarLocation;
-                Size = Settings.Instance.enemyBarFormSize;
-                dataGridView.DefaultCellStyle.SelectionBackColor = Settings.Instance.DumpTextBoxBackColor;
-                dataGridView.BackgroundColor = Settings.Instance.DumpTextBoxBackColor;
-                Text = "敵軍サイド";
-            }
-            else
-            {
-                Location = Settings.Instance.selfBarLocation;
-                Size = Settings.Instance.selfBarFormSize;
-                dataGridView.DefaultCellStyle.SelectionBackColor = Settings.Instance.DumpTextBoxBackColor;
-                dataGridView.BackgroundColor = Settings.Instance.DumpTextBoxBackColor;
-                Text = "自軍サイド";
-            }
-
             // フォームで仕様する各種変数の初期化
             int rowIndex = 0;
             gridBacks = new List<RowContiner>();
+            RefleshFlag = true;
+
+            // 設定を反映
+            setingDeployAction();
 
             // グリッドビューの初期化
-            dataGridView.DefaultCellStyle.ForeColor = Settings.Instance.DumpTextBoxForeColor;
-            dataGridView.DefaultCellStyle.BackColor = Settings.Instance.DumpTextBoxBackColor;
-            dataGridView.AllowUserToAddRows = false;
-
             dataGridView.Rows.Add(Weapons.allList.Count);
             foreach (WeaponModel Weapon in Weapons.allList)
             {
@@ -73,15 +55,12 @@ namespace sloppy
                 gridBacks.Add(new RowContiner(rowIndex, Weapon.label, (st.specialText != "") ? st.specialText : IntToTime(st.endingTime), st, st.time));
                 rowIndex++;
             }
-            myInstance = this;
 
             // セルサイズを調整
             gridResizeAction();
 
-            if(mode == ModeEnemy)
-            {
-                inputGroupVisible(false);
-            }
+            // 時刻合わせ等の全体コントロールを非表示
+            if (mode == ModeEnemy) controlGroupVisible(false);
 
             // グリッドビューにマウスダウンイベントを追加
             dataGridView.MouseDown += new MouseEventHandler(TacticalForm_MouseDown);
@@ -91,9 +70,11 @@ namespace sloppy
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView.Font = new Font("メイリオ", 11);
 
+            myInstance = this;
         }
 
-        public void inputGroupVisible(bool v)
+        // 時刻合わせ等のコントロール系表示
+        public void controlGroupVisible(bool v)
         {
             Size sizeFrameBorderSize = SystemInformation.FrameBorderSize;
             int nCaptionHeight = SystemInformation.CaptionHeight;
@@ -154,7 +135,6 @@ namespace sloppy
                 dataGridView[1, row.rowIndex].Style.ForeColor = row.status.forColor;
             }
             dataGridView.CurrentCell = null;
-            dataGridView.DefaultCellStyle.SelectionBackColor = Settings.Instance.DumpTextBoxBackColor;
         }
 
         private void TacticalForm_Shown(object sender, EventArgs e)
@@ -172,6 +152,7 @@ namespace sloppy
         private void gridResizeAction()
         {
             if (gridBacks == null) return;
+            if (gridBacks.Count == 0) return;
             int rowHeight = (dataGridView.Height - 2) / gridBacks.Count;
             int colWidth = (dataGridView.Width - 2) / 2;
             /* 均等に */
@@ -301,15 +282,66 @@ namespace sloppy
         {
         }
 
-        public void TacticalForm_backcolorChange()
+
+        public void setingDeployAction()
         {
-            if (RefleshFlag == true)
+
+            if (RefleshFlag == false) return;
+
+            // グリッドビューの背景色を設定
+            Color backColor = Settings.Instance.DumpTextBoxBackColor;
+            if (mode == ModeEnemy) backColor = ColorTranslator.FromHtml(nearColorString(Settings.Instance.DumpTextBoxBackColor, "#550000"));
+            dataGridView.DefaultCellStyle.BackColor = backColor;
+            dataGridView.DefaultCellStyle.SelectionBackColor = backColor;
+            dataGridView.BackgroundColor = backColor;
+
+            // グリッドビューの前景色を設定
+            dataGridView.DefaultCellStyle.ForeColor = Settings.Instance.DumpTextBoxForeColor;
+
+            // フォームの位置を設定
+            if (mode == ModeEnemy)
             {
-                // 背景色を設定
-                dataGridView.DefaultCellStyle.BackColor = Settings.Instance.DumpTextBoxBackColor;
-                dataGridView.DefaultCellStyle.SelectionBackColor = Settings.Instance.DumpTextBoxBackColor;
-                dataGridView.BackgroundColor = Settings.Instance.DumpTextBoxBackColor;
+                Location = Settings.Instance.enemyBarLocation;
+                Size = Settings.Instance.enemyBarFormSize;
+                Text = "敵軍サイド";
             }
+            else
+            {
+                Location = Settings.Instance.selfBarLocation;
+                Size = Settings.Instance.selfBarFormSize;
+                Text = "自軍サイド";
+            }
+
+            RefleshFlag = false;
+        }
+
+        // TODO:かなりいい加減な色合わせメソッド。ヒマになりすぎたら良い物に作りかえる
+        private String nearColorString(Color inputColor,string neearRGB)
+        {
+            string red   = ColorTranslator.ToHtml(Color.FromArgb(inputColor.ToArgb())).Substring(1, 2);
+            string green = ColorTranslator.ToHtml(Color.FromArgb(inputColor.ToArgb())).Substring(3, 2);
+            string blue  = ColorTranslator.ToHtml(Color.FromArgb(inputColor.ToArgb())).Substring(5, 2);
+            if(neearRGB.Length != 7) return "#" + red + green + blue;
+
+            int nearRed   = int.Parse(neearRGB.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
+            int nearGreen = int.Parse(neearRGB.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
+            int nearBlue  = int.Parse(neearRGB.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
+
+            int max = nearRed;
+            string near = nameof(nearRed);
+            if (max < nearGreen) { max = nearGreen; near = nameof(nearGreen); }
+            if (max < nearBlue) { max = nearBlue; near = nameof(nearBlue); }
+            string hexMax = Convert.ToString(max, 16);
+            switch (near)
+            {
+                case nameof(nearRed):
+                    return "#" + hexMax + green + blue;
+                case nameof(nearGreen):
+                    return "#" + red + hexMax + blue;
+                case nameof(nearBlue):
+                    return "#" + red + green + hexMax;
+            }
+            return "#" + red + green + blue;
         }
 
         private void button1_Click(object sender, EventArgs e)
