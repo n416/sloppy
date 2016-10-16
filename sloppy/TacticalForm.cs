@@ -236,7 +236,7 @@ namespace sloppy
 
         }
 
-        private int TimeToInt(string stringTime)
+        public int TimeToInt(string stringTime)
         {
             Regex regex = new Regex(@"[^0-9]");
             int inputInt;
@@ -286,7 +286,6 @@ namespace sloppy
         {
             e.Cancel = true;
         }
-
 
         public void setingDeployAction()
         {

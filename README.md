@@ -14,7 +14,7 @@
  * 手っ取り早く手に入れてみたい方はこちらからダウンロードできます。
 
 ## 最新バージョン
-  [1.5.2.1のビルド済](https://github.com/n416/sloppy/raw/master/sloppy.zip "1.5.2.1のビルド済")
+  [1.5.3.0のビルド済](https://github.com/n416/sloppy/raw/master/sloppy.zip "1.5.2.1のビルド済")
 
 
 ## フィルターに足りないものがあればお気軽に書き込みどうぞ

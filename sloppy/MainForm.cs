@@ -228,6 +228,9 @@ namespace sloppy
             // コンテナから発言だけを抜き出して、翻訳用の文字列を区切り文字でつなぐ
             string joinedString = string.Join(Constants.TranslationLogDelimiter, sourceContainer._echoList.ToArray());
 
+            // CTシミュレータの時刻を設定
+            SetAllSecAction(sourceContainer._ownerList);
+
             // 文字列を自軍のCTシミュレータに送る
             SelfBarAction(joinedString);
 
@@ -268,6 +271,19 @@ namespace sloppy
                 return;
             }
         }
+
+        // 設定できる状態ならばCTシミュレータのAllsecを設定する
+        private void SetAllSecAction(List<string> _ownerList)
+        {
+            foreach (string owner in _ownerList){
+                if (!Regex.IsMatch(owner, @"\d{2}'\d{2}")) continue;
+                selfTacticalForm.myInstance.timer.Enabled = true;
+                selfTacticalForm.allSec = selfTacticalForm.myInstance.TimeToInt(owner);
+                selfTacticalForm.inputText.Text = owner;
+                return;
+            }
+        }
+        
 
         // 文字列を自軍のCTシミュレータに送る
         private void SelfBarAction(string joinedString)

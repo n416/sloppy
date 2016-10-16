@@ -173,12 +173,12 @@
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.Button timeSettingButton;
-        private System.Windows.Forms.TextBox inputText;
         private System.Windows.Forms.Label inputLabel;
-        private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label timerPreview;
         private System.Windows.Forms.DataGridViewTextBoxColumn label;
         private System.Windows.Forms.DataGridViewTextBoxColumn time;
         private System.Windows.Forms.Button statusResetButton;
+        public System.Windows.Forms.Timer timer;
+        public System.Windows.Forms.TextBox inputText;
     }
 }
